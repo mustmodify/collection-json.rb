@@ -60,6 +60,23 @@ describe CollectionJSON do
       response.queries.first.data.first.name.should eq('search')
       response.query('search').prompt.should eq('Search')
     end
+
+    it 'includes the unapproved but totally necessary "options" attribute on data.' do
+      CollectionJSON.generate_for('/friends/') do |api|
+        api.set_template do |api|
+          api.add_data "force-side", options: [
+		  {
+                    value: 'dark',
+		    prompt: 'Dark Side'
+		  },
+		  {
+                    value: 'light',
+		    prompt: 'Light Side'
+		  }
+	  ]
+	end
+      end.to_json.should == %|{"collection":{"href":"/friends/","template":{"data":[{"name":"force-side","options":[{"value":"dark","prompt":"Dark Side"},{"value":"light","prompt":"Light Side"}]}]}}}|
+    end
   end
 
   describe :parse do
