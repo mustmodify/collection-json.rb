@@ -1,5 +1,45 @@
 # CollectionJSON
 
+## Fork Changes
+
+I forked the original repo specifically to add 'options'. I saw it used here and it's something we need on a project.
+
+```ruby
+      CollectionJSON.generate_for('/friends/') do |api|
+        api.set_template do |api|
+          api.add_data "force-side", options: [
+                  {
+                    value: 'dark',
+                    prompt: 'Dark Side'
+                  },
+                  {
+                    value: 'light',
+                    prompt: 'Light Side'
+                  }
+          ]
+        end
+      end.to_json
+```
+
+will result in:
+
+```json
+      { "collection" : { "href" : "/friends/",
+            "template" : { "data" : [ { "name" : "force-side",
+                      "options" : [ { "prompt" : "Dark Side",
+                            "value" : "dark"
+                          },
+                          { "prompt" : "Light Side",
+                            "value" : "light"
+                          }
+                        ]
+                    } ] }
+          } 
+      }
+```
+
+## We now return you to your regularly scheduled readme 
+
 A lightweight gem to easily build and parse response objects with a MIME type of
 'application/vnd.collection+json'.
 
