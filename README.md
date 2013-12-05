@@ -41,28 +41,36 @@ will result in:
           } 
       }
 ```
-### Options have groups.
+### Options have conditions.
 
-This isn't in HTML... but we don't have javascript. We needed a way to change the options based on what was selected elsewhere. This one is a bit less kosher in that there are obvious non-edge-cases where this would fail pretty quickly... ie if you choose two things. So at some point we would like it to be 'groups' and then to have groups have a collection.
+This isn't in HTML... but we don't have javascript. We needed a way to change the options based on what was selected elsewhere. 
 
 ```ruby
-      CollectionJSON.generate_for('/friends/') do |api|
+      CollectionJSON.generate_for('/song_search') do |api|
         api.set_template do |api|
           api.add_data "artist", options: [
                   {
                     value: '12',
                     prompt: 'Bob Marley',
-                    group: 'Reggae'
+                    conditions: [
+                      {:field => 'genre', :value => 'Reggae'}
+                      {:field => 'instrument', :value => 'guitar'}
+                    ]
                   },
                   {
                     value: '14',
                     prompt: 'The Wailers',
-                    group: 'Raggae'
+                    conditions: [
+                      {:field => 'genre', :value => 'Reggae'}
+                    ]
                   },
                   {
                     value: '16',
                     prompt: 'Miles Davis',
-                    group: 'Jazz'
+                    conditions: [
+                      {:field => 'genre', :value => 'Jazz'},
+                      {:field => 'instrument', :value => 'trumpet'}
+                    ]
                   }
           ]
         end
@@ -74,7 +82,7 @@ will result in:
 ```json
 {
     "collection": {
-        "href": "/music_search/",
+        "href": "/song_search",
         "template": {
             "data": [
                 {
@@ -83,17 +91,40 @@ will result in:
                         {
                             "value": "12",
                             "prompt": "Bob Marley",
-                            "group": "Reggae"
+                            "conditions": [
+                                {
+                                    "field": "genre",
+                                    "value": "Reggae"
+                                },
+                                {
+                                    "field": "instrument",
+                                    "value": "guitar"
+                                }
+                            ]
                         },
                         {
                             "value": "14",
                             "prompt": "The Wailers",
-                            "group": "Raggae"
+                            "conditions": [
+                                {
+                                    "field": "genre",
+                                    "value": "Reggae"
+                                }
+                            ]
                         },
                         {
                             "value": "16",
                             "prompt": "Miles Davis",
-                            "group": "Jazz"
+                            "conditions": [
+                                {
+                                    "field": "genre",
+                                    "value": "Jazz"
+                                },
+                                {
+                                    "field": "instrument",
+                                    "value": "trumpet"
+                                }
+                            ]
                         }
                     ]
                 }

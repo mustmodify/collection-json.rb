@@ -82,24 +82,32 @@ describe CollectionJSON do
       CollectionJSON.generate_for('/friends/') do |api|
         api.set_template do |api|
           api.add_data "artist", options: [
-		  {
+                  {
                     value: '12',
-		    prompt: 'Bob Marley',
-		    group: 'Reggae'
-		  },
-		  {
-		    value: '14',
-		    prompt: 'The Wailers',
-		    group: 'Raggae'
-		  },
-		  {
+                    prompt: 'Bob Marley',
+                    conditions: [
+                      {:field => 'genre', :value => 'Reggae'},
+                      {:field => 'instrument', :value => 'guitar'}
+                    ]
+                  },
+                  {
+                    value: '14',
+                    prompt: 'The Wailers',
+                    conditions: [
+                      {:field => 'genre', :value => 'Reggae'}
+                    ]
+                  },
+                  {
                     value: '16',
-		    prompt: 'Miles Davis',
-		    group: 'Jazz'
-		  }
-	  ]
+                    prompt: 'Miles Davis',
+                    conditions: [
+                      {:field => 'genre', :value => 'Jazz'},
+                      {:field => 'instrument', :value => 'trumpet'}
+                    ]
+                  }
+          ]
 	end
-      end.to_json.should == %|{\"collection\":{\"href\":\"/music_search/\",\"template\":{\"data\":[{\"name\":\"artist\",\"options\":[{\"value\":\"12\",\"prompt\":\"Bob Marley\",\"group\":\"Reggae\"},{\"value\":\"14\",\"prompt\":\"The Wailers\",\"group\":\"Raggae\"},{\"value\":\"16\",\"prompt\":\"Miles Davis\",\"group\":\"Jazz\"}]}]}}}|
+      end.to_json.should == %|{\"collection\":{\"href\":\"/friends/\",\"template\":{\"data\":[{\"name\":\"artist\",\"options\":[{\"value\":\"12\",\"prompt\":\"Bob Marley\",\"conditions\":[{\"field\":\"genre\",\"value\":\"Reggae\"},{\"field\":\"instrument\",\"value\":\"guitar\"}]},{\"value\":\"14\",\"prompt\":\"The Wailers\",\"conditions\":[{\"field\":\"genre\",\"value\":\"Reggae\"}]},{\"value\":\"16\",\"prompt\":\"Miles Davis\",\"conditions\":[{\"field\":\"genre\",\"value\":\"Jazz\"},{\"field\":\"instrument\",\"value\":\"trumpet\"}]}]}]}}}|
     end
   end
 
