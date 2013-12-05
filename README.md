@@ -2,7 +2,11 @@
 
 ## Fork Changes
 
-I forked the original repo specifically to add 'options'. I saw it used here and it's something we need on a project.
+In the process of using collection+JSON for an API, we found we had certain needs that weren't being met. We have added non-canon elements to collection+JSON in this repo. We have tried to do so responsibly, but it's important to note that this is NOT PER Collection+JSON spec. But it is good stuff, and we think it's useful.
+
+### Options
+
+So there's no way to say 'here are the choices' as you would with <select><option>...</option></select>.
 
 ```ruby
       CollectionJSON.generate_for('/friends/') do |api|
@@ -37,6 +41,68 @@ will result in:
           } 
       }
 ```
+### Options have groups.
+
+This isn't in HTML... but we don't have javascript. We needed a way to change the options based on what was selected elsewhere. This one is a bit less kosher in that there are obvious non-edge-cases where this would fail pretty quickly... ie if you choose two things. So at some point we would like it to be 'groups' and then to have groups have a collection.
+
+```ruby
+      CollectionJSON.generate_for('/friends/') do |api|
+        api.set_template do |api|
+          api.add_data "artist", options: [
+                  {
+                    value: '12',
+                    prompt: 'Bob Marley',
+                    group: 'Reggae'
+                  },
+                  {
+                    value: '14',
+                    prompt: 'The Wailers',
+                    group: 'Raggae'
+                  },
+                  {
+                    value: '16',
+                    prompt: 'Miles Davis',
+                    group: 'Jazz'
+                  }
+          ]
+        end
+      end.to_json
+```
+
+will result in:
+
+```json
+{
+    "collection": {
+        "href": "/music_search/",
+        "template": {
+            "data": [
+                {
+                    "name": "artist",
+                    "options": [
+                        {
+                            "value": "12",
+                            "prompt": "Bob Marley",
+                            "group": "Reggae"
+                        },
+                        {
+                            "value": "14",
+                            "prompt": "The Wailers",
+                            "group": "Raggae"
+                        },
+                        {
+                            "value": "16",
+                            "prompt": "Miles Davis",
+                            "group": "Jazz"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
+
 
 ## We now return you to your regularly scheduled readme 
 

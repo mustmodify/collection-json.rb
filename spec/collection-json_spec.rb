@@ -77,6 +77,30 @@ describe CollectionJSON do
 	end
       end.to_json.should == %|{"collection":{"href":"/friends/","template":{"data":[{"name":"force-side","options":[{"value":"dark","prompt":"Dark Side"},{"value":"light","prompt":"Light Side"}]}]}}}|
     end
+
+    it 'includes "group" as an option attribute.' do
+      CollectionJSON.generate_for('/friends/') do |api|
+        api.set_template do |api|
+          api.add_data "artist", options: [
+		  {
+                    value: '12',
+		    prompt: 'Bob Marley',
+		    group: 'Reggae'
+		  },
+		  {
+		    value: '14',
+		    prompt: 'The Wailers',
+		    group: 'Raggae'
+		  },
+		  {
+                    value: '16',
+		    prompt: 'Miles Davis',
+		    group: 'Jazz'
+		  }
+	  ]
+	end
+      end.to_json.should == %|{\"collection\":{\"href\":\"/music_search/\",\"template\":{\"data\":[{\"name\":\"artist\",\"options\":[{\"value\":\"12\",\"prompt\":\"Bob Marley\",\"group\":\"Reggae\"},{\"value\":\"14\",\"prompt\":\"The Wailers\",\"group\":\"Raggae\"},{\"value\":\"16\",\"prompt\":\"Miles Davis\",\"group\":\"Jazz\"}]}]}}}|
+    end
   end
 
   describe :parse do
