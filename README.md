@@ -4,6 +4,31 @@
 
 In the process of using collection+JSON for an API, we found we had certain needs that weren't being met. We have added non-canon elements to collection+JSON in this repo. We have tried to do so responsibly, but it's important to note that this is NOT PER Collection+JSON spec. But it is good stuff, and we think it's useful.
 
+### Related
+
+```json
+{
+    "collection": {
+        "href": "/starships",
+        "items": [
+            {
+                "href": "/starships/enterprise",
+                "related": [
+                    {
+                        "officers": [
+                            {
+                                "name": "Picard",
+                                "position": "Captain"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
 ### Options
 
 So there's no way to say 'here are the choices' as you would with <select><option>...</option></select>.

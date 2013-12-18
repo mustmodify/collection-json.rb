@@ -19,10 +19,12 @@ module CollectionJSON
         if block_given?
           data = []
           links = []
-          item_builder = ItemBuilder.new(data, links)
+	  related = []
+          item_builder = ItemBuilder.new(data, links, related)
           yield(item_builder)
           item.data data
           item.links links
+	  item.related related
         end
       end
     end
@@ -49,16 +51,21 @@ module CollectionJSON
   end
 
   class ItemBuilder
-    attr_reader :data, :links
+    attr_reader :data, :links, :related
 
-    def initialize(data, links)
+    def initialize(data, links, related)
       @data = data
       @links = links
+      @related = related
     end
 
     def add_data(name, params = {})
       params.merge!({'name' => name})
       data << params
+    end
+
+    def add_related(rel, collection = [])
+      related << {rel => collection}
     end
 
     def add_link(href, rel, params = {})

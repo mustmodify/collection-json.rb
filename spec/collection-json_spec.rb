@@ -109,6 +109,18 @@ describe CollectionJSON do
 	end
       end.to_json.should == %|{\"collection\":{\"href\":\"/friends/\",\"template\":{\"data\":[{\"name\":\"artist\",\"options\":[{\"value\":\"12\",\"prompt\":\"Bob Marley\",\"conditions\":[{\"field\":\"genre\",\"value\":\"Reggae\"},{\"field\":\"instrument\",\"value\":\"guitar\"}]},{\"value\":\"14\",\"prompt\":\"The Wailers\",\"conditions\":[{\"field\":\"genre\",\"value\":\"Reggae\"}]},{\"value\":\"16\",\"prompt\":\"Miles Davis\",\"conditions\":[{\"field\":\"genre\",\"value\":\"Jazz\"},{\"field\":\"instrument\",\"value\":\"trumpet\"}]}]}]}}}|
     end
+
+    it 'includes "related" on an item' do
+      CollectionJSON.generate_for('/starships') do |api|
+        api.add_item('/starships/enterprise') do |api|
+          api.add_related( "officers", [
+	     {
+               name: 'Picard',
+               position: 'Captain'
+	     }])
+	end
+      end.to_json.should == "{\"collection\":{\"href\":\"/starships\",\"items\":[{\"href\":\"/starships/enterprise\",\"related\":[{\"officers\":[{\"name\":\"Picard\",\"position\":\"Captain\"}]}]}]}}"
+    end
   end
 
   describe :parse do
