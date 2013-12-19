@@ -119,7 +119,7 @@ describe CollectionJSON do
                position: 'Captain'
 	     }])
 	end
-      end.to_json.should == "{\"collection\":{\"href\":\"/starships\",\"items\":[{\"href\":\"/starships/enterprise\",\"related\":[{\"officers\":[{\"name\":\"Picard\",\"position\":\"Captain\"}]}]}]}}"
+      end.to_json.should == "{\"collection\":{\"href\":\"/starships\",\"items\":[{\"href\":\"/starships/enterprise\",\"related\":{\"officers\":[{\"name\":\"Picard\",\"position\":\"Captain\"}]}}]}}"
     end
   end
 

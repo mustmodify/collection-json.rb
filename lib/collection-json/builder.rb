@@ -19,7 +19,7 @@ module CollectionJSON
         if block_given?
           data = []
           links = []
-	  related = []
+	  related = {}
           item_builder = ItemBuilder.new(data, links, related)
           yield(item_builder)
           item.data data
@@ -65,7 +65,7 @@ module CollectionJSON
     end
 
     def add_related(rel, collection = [])
-      related << {rel => collection}
+      related[rel] = collection
     end
 
     def add_link(href, rel, params = {})

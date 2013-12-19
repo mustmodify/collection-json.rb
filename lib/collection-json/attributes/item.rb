@@ -9,7 +9,7 @@ module CollectionJSON
               transform:      lambda { |data| data.each.map{ |d| Data.from_hash(d) }},
               default:        [],
               find_method:    {method_name: :datum, key: 'name'}
-    attribute :related
+    attribute :related, default: {}
     attribute :links,
               transform:      lambda { |links| links.each.map { |l| Link.from_hash(l) }},
               default:        [],
