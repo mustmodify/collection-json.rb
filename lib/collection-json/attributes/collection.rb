@@ -22,6 +22,7 @@ module CollectionJSON
               default:    [],
               find_method:    :query
     attribute :template, transform: lambda { |template| Template.from_hash(template) }
+    attribute :meta, default: {}
     attribute :error, transform: lambda { |error| Error.from_hash(error) }
   end
 end

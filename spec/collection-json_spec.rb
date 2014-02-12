@@ -61,6 +61,15 @@ describe CollectionJSON do
       response.query('search').prompt.should eq('Search')
     end
 
+    it 'includes a "meta" top-level element' do
+      response = CollectionJSON.generate_for('/search') do |builder|
+	      builder.add_meta('total_results', 33)
+      end
+
+      response.meta['total_results'].should == 33
+      response.to_json.should == %|{"collection":{"href":"/search","meta":{"total_results":33}}}|
+    end
+
     it 'includes the unapproved but totally necessary "options" attribute on data.' do
       CollectionJSON.generate_for('/friends/') do |api|
         api.set_template do |api|

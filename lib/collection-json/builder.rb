@@ -13,6 +13,10 @@ module CollectionJSON
       @collection.links << Link.from_hash(params)
     end
 
+    def add_meta(name, value)
+      @collection.meta[name] = value
+    end
+
     def add_item(href, params = {}, &block)
       params.merge!({'href' => href})
       @collection.items << Item.from_hash(params).tap do |item|

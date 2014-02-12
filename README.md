@@ -31,6 +31,31 @@ Here, we've gone off-road a bit. If we were going to truly respect the collectio
 }
 ```
 
+### Meta
+
+Sometimes you have meta-data that doesn't belong in an item, is not a link, etc. Examples include:
+
+* total search results
+* results per page
+* server response time
+
+For those situations, we have added a base-level element 'meta'.
+
+```json
+{
+  "collection":
+  {
+    "href": "/search?term=breach",
+    "meta": 
+    {
+      current_page: 12,
+      total_pages: 192,
+      result_count: 1917,
+    }
+  }
+}
+```
+
 ### Options
 
 So there's no way to say 'here are the choices' as you would with <select><option>...</option></select>.
