@@ -4,33 +4,6 @@
 
 In the process of using collection+JSON for an API, we found we had certain needs that weren't being met. We have added non-canon elements to collection+JSON in this repo. We have tried to do so responsibly, but it's important to note that this is NOT PER Collection+JSON spec. But it is good stuff, and we think it's useful.
 
-### Related
-
-Here, we've gone off-road a bit. If we were going to truly respect the collection+JSON style, this would be considerably more ... verbose. And we may still go that way. We're curious whether this more compact schema will work.
-
-```json
-{
-    "collection": {
-        "href": "/starships",
-        "items": [
-            {
-                "href": "/starships/enterprise",
-                "related":
-                {
-                    "officers": [
-                        {
-                            "name": "Picard",
-                            "position": "Captain"
-                        }
-                    ]
-                }
-                
-            }
-        ]
-    }
-}
-```
-
 ### Meta
 
 Sometimes you have meta-data that doesn't belong in an item, is not a link, etc. Examples include:
@@ -182,6 +155,33 @@ will result in:
                 }
             ]
         }
+    }
+}
+```
+
+### Related
+
+Here, we've gone off-road a bit. If we were going to truly respect the collection+JSON style, this would be considerably more ... verbose. And we may still go that way. We're curious whether this more compact schema will work.
+
+```json
+{
+    "collection": {
+        "href": "/starships",
+        "items": [
+            {
+                "href": "/starships/enterprise",
+                "related":
+                {
+                    "officers": [
+                        {
+                            "name": "Picard",
+                            "position": "Captain"
+                        }
+                    ]
+                }
+                
+            }
+        ]
     }
 }
 ```
