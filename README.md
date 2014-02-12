@@ -48,9 +48,9 @@ For those situations, we have added a base-level element 'meta'.
     "href": "/search?term=breach",
     "meta": 
     {
-      current_page: 12,
-      total_pages: 192,
-      result_count: 1917,
+      "current_page": "12",
+      "total_pages": "192",
+      "result_count": "1917",
     }
   }
 }
