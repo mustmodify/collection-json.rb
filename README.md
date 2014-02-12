@@ -14,6 +14,7 @@ Sometimes you have meta-data that doesn't belong in an item, is not a link, etc.
 
 For those situations, we have added a base-level element 'meta'.
 
+
 ```json
 {
   "collection":
@@ -28,6 +29,16 @@ For those situations, we have added a base-level element 'meta'.
   }
 }
 ```
+
+to add this to your CollectionJSON result:
+
+```ruby
+      CollectionJSON.generate_for('/search') do |api|
+        api.add_meta('current_page', '12')
+      end
+```
+
+Adding the same key twice will overwrite the previous values ... it's a hash, people.
 
 ### Options
 
