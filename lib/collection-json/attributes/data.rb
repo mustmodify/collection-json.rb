@@ -6,6 +6,8 @@ module CollectionJSON
     attribute :name
     attribute :value
     attribute :prompt
+    attribute :required, transform: lambda {|value| value.to_s}
+    attribute :regexp
     attribute :options,
               transform:      lambda { |data| data.each.map { |d| Option.from_hash(d) }},
               default:        [],

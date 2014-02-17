@@ -40,6 +40,35 @@ to add this to your CollectionJSON result:
 
 Adding the same key twice will overwrite the previous values ... it's a hash, people.
 
+### Template Validation
+following [the existing Collection+JSON extension]:(https://github.com/mamund/collection-json/blob/master/extensions/template-validation.md) you can add 'required' and 'regexp' fields to the data elements of forms:
+
+```ruby
+CollectionJSON.generate_for('/starships') do |api|
+  api.set_template do |api|
+    api.add_data 'registry', required: true, regexp: "NCC-[0-9]{3,}"
+  end
+end
+```
+results in:
+
+```json
+{
+    "collection": {
+        "href": "/starships",
+        "template": {
+            "data": [
+                {
+                    "name": "registry",
+                    "required": "true",
+                    "regexp": "NCC-[0-9]{3,}"
+                }
+            ]
+        }
+    }
+}
+```
+
 ### Options
 
 So there's no way to say 'here are the choices' as you would with <select><option>...</option></select>.
