@@ -1,9 +1,15 @@
 # CollectionJSON
 
-## Fork Changes
+## Forked Changes
 
-In the process of using collection+JSON for an API, we found we had certain needs that weren't being met. We have added non-canon elements to collection+JSON in this repo. We have tried to do so responsibly, but it's important to note that this is NOT PER Collection+JSON spec. But it is good stuff, and we think it's useful.
+In the process of using collection+JSON for an API, our team found we had certain needs that weren't being met. We have added non-canon elements to collection+JSON in this repo. We have tried to do so responsibly, but it's important to note that this is NOT per Collection+JSON spec. But it is good stuff, and we think it's useful.
 
+* meta
+* template validations
+* template options
+* template option conditions
+* template errors
+* related ( alpha )
 ### Meta
 
 Sometimes you have meta-data that doesn't belong in an item, is not a link, etc. Examples include:
@@ -151,46 +157,10 @@ will result in:
         "template": {
             "data": [
                 {
-                    "name": "artist",
-                    "options": [
-                        {
-                            "value": "12",
-                            "prompt": "Bob Marley",
-                            "conditions": [
-                                {
-                                    "field": "genre",
-                                    "value": "Reggae"
-                                },
-                                {
-                                    "field": "instrument",
-                                    "value": "guitar"
-                                }
-                            ]
-                        },
-                        {
-                            "value": "14",
-                            "prompt": "The Wailers",
-                            "conditions": [
-                                {
-                                    "field": "genre",
-                                    "value": "Reggae"
-                                }
-                            ]
-                        },
-                        {
-                            "value": "16",
-                            "prompt": "Miles Davis",
-                            "conditions": [
-                                {
-                                    "field": "genre",
-                                    "value": "Jazz"
-                                },
-                                {
-                                    "field": "instrument",
-                                    "value": "trumpet"
-                                }
-                            ]
-                        }
+                    "name": "starships",
+                    "errors": [
+                      "were meant to fly",
+                      "hands up and touch the sky"
                     ]
                 }
             ]
@@ -198,6 +168,27 @@ will result in:
     }
 }
 ```
+
+### Field-Specific Errors
+
+So collection+JSON has this lame "Error" field. We feel like that's useful for "You aren't authorized to do that" and other flash-messagy kind of stuff. But When you want to provide feedback about a form submission, one bit of text isn't sufficient.
+
+```ruby
+      CollectionJSON.generate_for('/starships') do |api|
+        api.set_template do |api|
+          api.add_data "mode of", {
+                    value: 'riverboat',
+                    errors: [
+                      'were meant to fly',
+                      'hands up and touch the sky'
+                    ]
+          }
+        end
+      end
+```
+
+produces:
+
 
 ### Related
 

@@ -127,6 +127,14 @@ describe CollectionJSON do
       end.to_json.should == %|{"collection":{"href":"/starships","template":{"data":[{"name":"registry","required":"true","regexp":"NCC-[0-9]{3,}"}]}}}| 
     end
 
+    it 'includes field-specific errors in the template' do
+      CollectionJSON.generate_for('/starships') do |api|
+        api.set_template do |api|
+          api.add_data 'registry', errors: ['must follow the pattern NCC-xxxx']
+	end
+      end.to_json.should == %|{"collection":{"href":"/starships","template":{"data":[{"name":"registry","errors":["must follow the pattern NCC-xxxx"]}]}}}|
+    end
+
     it 'includes "related" on an item' do
       CollectionJSON.generate_for('/starships') do |api|
         api.add_item('/starships/enterprise') do |api|
