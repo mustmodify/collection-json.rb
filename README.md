@@ -10,6 +10,7 @@ In the process of using collection+JSON for an API, our team found we had certai
 * template option conditions
 * template errors
 * related ( alpha )
+
 ### Meta
 
 Sometimes you have meta-data that doesn't belong in an item, is not a link, etc. Examples include:
