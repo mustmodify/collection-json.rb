@@ -149,26 +149,6 @@ This isn't in HTML... but we don't have javascript. We needed a way to change th
       end.to_json
 ```
 
-will result in:
-
-```json
-{
-    "collection": {
-        "href": "/song_search",
-        "template": {
-            "data": [
-                {
-                    "name": "starships",
-                    "errors": [
-                      "were meant to fly",
-                      "hands up and touch the sky"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
 
 ### Field-Specific Errors
 
@@ -190,6 +170,24 @@ So collection+JSON has this lame "Error" field. We feel like that's useful for "
 
 produces:
 
+```json
+{
+    "collection": {
+        "href": "/song_search",
+        "template": {
+            "data": [
+                {
+                    "name": "starships",
+                    "errors": [
+                      "were meant to fly",
+                      "hands up and touch the sky"
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
 
 ### Related
 
