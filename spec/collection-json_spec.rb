@@ -146,6 +146,14 @@ describe CollectionJSON do
 	end
       end.to_json.should == "{\"collection\":{\"href\":\"/starships\",\"items\":[{\"href\":\"/starships/enterprise\",\"related\":{\"officers\":[{\"name\":\"Picard\",\"position\":\"Captain\"}]}}]}}"
     end
+    
+    it 'allows the "value type" attribute a la HL7' do
+      CollectionJSON.generate_for('/facebook') do |api|
+        api.set_template do |api|
+          api.add_data "bff_email", value_type: 'email'
+	end
+      end.to_json.should == %|{"collection":{"href":"/facebook","template":{"data":[{"name":"bff_email","value_type":"email"}]}}}|
+    end
   end
 
   describe :parse do

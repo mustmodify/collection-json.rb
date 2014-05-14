@@ -9,6 +9,7 @@ In the process of using collection+JSON for an API, our team found we had certai
 * template options
 * template option conditions
 * template errors
+* template value types
 * related ( alpha )
 
 ### Meta
@@ -188,6 +189,21 @@ produces:
     }
 }
 ```
+
+### Value Types
+
+Part validation, part how-do-I-collect-this, here are some values I would expect to be valid:
+
+* string
+* boolean
+* date
+* numeric
+* email
+* password
+* text
+* time
+* file
+
 
 ### Related
 

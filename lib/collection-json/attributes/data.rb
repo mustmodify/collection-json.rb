@@ -4,6 +4,7 @@ require_relative 'option'
 module CollectionJSON
   class Data < Attribute
     attribute :name
+    attribute :value_type
     attribute :value
     attribute :prompt
     attribute :errors, default: []
