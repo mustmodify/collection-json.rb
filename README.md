@@ -193,9 +193,11 @@ produces:
 
 ### Template Recursion
 
-This is the equivalent of HTML fieldsets. It allows you to group fields. 
+This is the equivalent of HTML fieldsets. It allows you to group fields. Templates can be nested within data OR in sequence.
 
 Although we used this to support follow-up questions, it could also be used to support sections.
+
+#### Template Recursion In Sequence:
 
 ```ruby
       CollectionJSON.generate_for('/results.json') do |api|
@@ -240,6 +242,49 @@ produces:
           }
       }
 ```
+
+#### Nested Template Recursion
+
+```ruby
+      CollectionJSON.generate_for('/results.json') do |api|
+        api.set_template do |api|
+          api.add_data "history_of_smoking" do |api|
+            api.add_template do |api|
+              api.add_data "packs_per_day_max"
+              api.add_data "do_you_wanna_quit"
+            end
+          end
+        end
+      end
+```
+
+produces:
+
+```js
+      {
+          "collection": {
+              "href": "/results.json",
+              "template": {
+                  "data": [
+                      {
+                          "name": "history_of_smoking",
+                          "template": {
+                              "data": [
+                                  {
+                                      "name": "packs_per_day_max"
+                                  },
+                                  {
+                                      "name": "do_you_wanna_quit"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          }
+      }
+```
+
 
 ### Value Types
 

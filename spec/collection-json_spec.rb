@@ -155,7 +155,7 @@ describe CollectionJSON do
       end.to_json.should == %|{"collection":{"href":"/facebook","template":{"data":[{"name":"bff_email","value_type":"email"}]}}}|
     end
 
-    it 'allows recursive templates' do
+    it 'allows recursive templates in sequence' do
       endpoint = CollectionJSON.generate_for('/results.json') do |api|
         api.set_template do |api|
           api.add_data "gender"
@@ -167,6 +167,21 @@ describe CollectionJSON do
       end
 
       endpoint.to_json.should == "{\"collection\":{\"href\":\"/results.json\",\"template\":{\"data\":[{\"name\":\"gender\"},{\"name\":\"smoking\",\"template\":{\"data\":[{\"name\":\"history_of_smoking\"},{\"name\":\"packs_per_day_max\"}]}}]}}}"
+    end
+
+    it 'allows nested recursive templates' do
+      endpoint = CollectionJSON.generate_for('/results.json') do |api|
+        api.set_template do |api|
+          api.add_data "history_of_smoking" do |api|
+            api.add_template do |api|
+              api.add_data "packs_per_day_max"
+              api.add_data "do_you_wanna_quit"
+            end
+	  end
+        end
+      end
+
+      endpoint.to_json.should == "{\"collection\":{\"href\":\"/results.json\",\"template\":{\"data\":[{\"name\":\"history_of_smoking\",\"template\":{\"data\":[{\"name\":\"packs_per_day_max\"},{\"name\":\"do_you_wanna_quit\"}]}}]}}}"
     end
   end
 
