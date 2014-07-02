@@ -102,5 +102,15 @@ module CollectionJSON
       params.merge!({'name' => name})
       data << params
     end
+
+    def add_template(params = {}, &block)
+      if block_given?
+        t_data = params['data'] || []
+        template_builder = TemplateBuilder.new(t_data)
+        yield(template_builder) 
+        params.merge!({'template' => {'data' => t_data}})
+      end
+      data << params
+    end
   end
 end

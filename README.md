@@ -9,6 +9,7 @@ In the process of using collection+JSON for an API, our team found we had certai
 * template options
 * template option conditions
 * template errors
+* template recursion
 * template value types
 * related ( alpha )
 
@@ -188,6 +189,56 @@ produces:
         }
     }
 }
+```
+
+### Template Recursion
+
+This is the equivalent of HTML fieldsets. It allows you to group fields. 
+
+Although we used this to support follow-up questions, it could also be used to support sections.
+
+```ruby
+      CollectionJSON.generate_for('/results.json') do |api|
+        api.set_template do |api|
+          api.add_data "gender"
+          api.add_template(name: "smoking") do |api|
+            api.add_data "history_of_smoking"
+            api.add_data "packs_per_day_max"
+          end
+        end
+      end
+```
+
+note that we use set_template on the collection, and add_template inside... per convention, add_* is used when there may be N of them... set_* is used when there can be only one.
+
+produces:
+
+```json
+      {
+          "collection": {
+              "href": "/results.json",
+              "template": {
+                  "data": [
+                      {
+                          "name": "gender"
+                      },
+                      {
+                          "name": "smoking",
+                          "template": {
+                              "data": [
+                                  {
+                                      "name": "history_of_smoking"
+                                  },
+                                  {
+                                      "name": "packs_per_day_max"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          }
+      }
 ```
 
 ### Value Types

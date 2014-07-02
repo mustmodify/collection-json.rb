@@ -154,6 +154,20 @@ describe CollectionJSON do
 	end
       end.to_json.should == %|{"collection":{"href":"/facebook","template":{"data":[{"name":"bff_email","value_type":"email"}]}}}|
     end
+
+    it 'allows recursive templates' do
+      endpoint = CollectionJSON.generate_for('/results.json') do |api|
+        api.set_template do |api|
+          api.add_data "gender"
+          api.add_template(:name => "smoking") do |api|
+            api.add_data "history_of_smoking"
+            api.add_data "packs_per_day_max"
+          end
+        end
+      end
+
+      endpoint.to_json.should == "{\"collection\":{\"href\":\"/results.json\",\"template\":{\"data\":[{\"name\":\"gender\"},{\"name\":\"smoking\",\"template\":{\"data\":[{\"name\":\"history_of_smoking\"},{\"name\":\"packs_per_day_max\"}]}}]}}}"
+    end
   end
 
   describe :parse do

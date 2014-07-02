@@ -14,5 +14,6 @@ module CollectionJSON
               transform:      lambda { |data| data.each.map { |d| Option.from_hash(d) }},
               default:        [],
               find_method:    {method_name: :datum, key: 'name'}
+    attribute :template, transform: lambda { |template| Template.from_hash( template ) }
   end
 end
