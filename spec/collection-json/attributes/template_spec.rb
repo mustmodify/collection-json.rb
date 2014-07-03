@@ -30,4 +30,8 @@ describe CollectionJSON::Template do
       hash['template']['data'].first.keys.length.should eq(2)
     end
   end
+
+  it 'accepts "parameter" attribute' do
+    CollectionJSON::Template.from_hash(data: [{parameter: 'animal[description]', name: 'description'}]).to_json.should == "{\"data\":[{\"name\":\"description\",\"parameter\":\"animal[description]\"}]}"
+  end
 end

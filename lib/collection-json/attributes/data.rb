@@ -7,6 +7,7 @@ module CollectionJSON
     attribute :value_type
     attribute :value
     attribute :prompt
+    attribute :parameter
     attribute :errors, default: []
     attribute :required, transform: lambda {|value| value.to_s}
     attribute :regexp

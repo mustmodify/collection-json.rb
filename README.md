@@ -10,7 +10,7 @@ In the process of using collection+JSON for an API, our team found we had certai
 * template option conditions
 * template errors
 * template recursion
-* template value types
+* other template fields
 * related ( alpha )
 
 ### Meta
@@ -286,7 +286,9 @@ produces:
 ```
 
 
-### Value Types
+### Other Template Fields
+
+#### Value Type 
 
 Part validation, part how-do-I-collect-this, here are some values I would expect to be valid:
 
@@ -300,6 +302,36 @@ Part validation, part how-do-I-collect-this, here are some values I would expect
 * time
 * file
 
+#### Parameter
+
+When you submit this back to the server, what parameter should be used? Although the Collection+JSON spec isn't clear on what parameter to use, the 'name' field seems like the most obvious option. Here we are being explicit.
+
+      {
+          "collection": {
+              "href": "animals.json",
+              "items": [
+                  {
+                      "href": "/surveys/1.json",
+                      "data": [
+                          {
+                              "name": "description",
+                              "value": "green with shell"
+                          }
+                      ]
+                  }
+              ],
+              "template": {
+                  "data": [
+                      {
+                          "name": "description",
+                          "parameter": "animal[description]",
+                          "value_type": "string",
+                          "prompt": "Description"
+                      },
+                 ]
+              }
+          }
+      }
 
 ### Related
 
