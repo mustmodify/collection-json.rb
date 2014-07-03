@@ -245,10 +245,12 @@ produces:
 
 #### Nested Template Recursion
 
+This is basically the same thing as nested liste items.
+
 ```ruby
       CollectionJSON.generate_for('/results.json') do |api|
         api.set_template do |api|
-          api.add_data "history_of_smoking" do |api|
+          api.add_data("history_of_smoking", :value_type => "boolean", :value => 'yes') do |api|
             api.add_template do |api|
               api.add_data "packs_per_day_max"
               api.add_data "do_you_wanna_quit"
@@ -261,30 +263,33 @@ produces:
 produces:
 
 ```js
-      {
-          "collection": {
-              "href": "/results.json",
-              "template": {
-                  "data": [
-                      {
-                          "name": "history_of_smoking",
-                          "template": {
-                              "data": [
-                                  {
-                                      "name": "packs_per_day_max"
-                                  },
-                                  {
-                                      "name": "do_you_wanna_quit"
-                                  }
-                              ]
-                          }
-                      }
-                  ]
-              }
-          }
-      }
-```
+{
+    "collection": {
+        "href": "/results.json",
+        "template": {
+            "data": [
+                {
+                    "name": "history_of_smoking",
+                    "value_type": "boolean",
+                    "value": "yes",
 
+
+                    "template": {
+                        "data": [
+                            {
+                                "name": "packs_per_day_max"
+                            },
+                            {
+                                "name": "do_you_wanna_quit"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}
+```
 
 ### Other Template Fields
 
