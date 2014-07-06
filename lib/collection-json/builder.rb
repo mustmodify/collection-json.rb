@@ -103,7 +103,7 @@ module CollectionJSON
         t_data = params['data'] || []
         template_builder = TemplateBuilder.new(t_data)
         yield(template_builder) 
-        params.merge!({'template' => {'data' => t_data}})
+        params = ({'template' => params.merge({'data' => t_data})})
       end
 
       data << params

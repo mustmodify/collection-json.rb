@@ -184,7 +184,25 @@ describe CollectionJSON do
       endpoint.to_json.should == "{\"collection\":{\"href\":\"/results.json\",\"template\":{\"data\":[{\"name\":\"history_of_smoking\",\"value_type\":\"boolean\",\"value\":\"yes\",\"template\":{\"data\":[{\"name\":\"packs_per_day_max\"},{\"name\":\"do_you_wanna_quit\"}]}}]}}}" 
 
     end
+
+    describe 'conditions' do
+      it 'works for templates' do
+        endpoint = CollectionJSON.generate_for('/planet.json') do |api|
+          api.set_template do |api|
+            api.add_data "history_of_tobacco", options: [{value: 'true'}, {value: 'false'}] do |api|
+              api.add_template(conditions: [{field: 'history_of_tobacco', value: 'true'}]) do |api|
+                api.add_data "years_of_tobacco_usage", value_type: 'numeric'
+                api.add_data "max_packs_per_day", value_type: 'numeric'
+              end
+            end
+          end
+        end 
+
+        endpoint.to_json.should == "{\"collection\":{\"href\":\"/planet.json\",\"template\":{\"data\":[{\"name\":\"history_of_tobacco\",\"options\":[{\"value\":\"true\"},{\"value\":\"false\"}],\"template\":{\"conditions\":[{\"field\":\"history_of_tobacco\",\"value\":\"true\"}],\"data\":[{\"name\":\"years_of_tobacco_usage\",\"value_type\":\"numeric\"},{\"name\":\"max_packs_per_day\",\"value_type\":\"numeric\"}]}}]}}}" 
+      end
+    end
   end
+
 
   describe :parse do
     before(:all) do
