@@ -9,6 +9,7 @@ module CollectionJSON
     attribute :prompt
     attribute :parameter
     attribute :errors, default: []
+    attribute :conditions
     attribute :required, transform: lambda {|value| value.to_s}
     attribute :regexp
     attribute :options,

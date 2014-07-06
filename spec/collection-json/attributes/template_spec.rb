@@ -34,4 +34,8 @@ describe CollectionJSON::Template do
   it 'accepts "parameter" attribute' do
     CollectionJSON::Template.from_hash(data: [{parameter: 'animal[description]', name: 'description'}]).to_json.should == "{\"data\":[{\"name\":\"description\",\"parameter\":\"animal[description]\"}]}"
   end
+
+  it 'accepts "conditions" attribute' do
+    CollectionJSON::Template.from_hash(conditions: [{field: 'description', value: 'true'}]).to_json.should == "{\"conditions\":[{\"field\":\"description\",\"value\":\"true\"}]}"
+  end
 end

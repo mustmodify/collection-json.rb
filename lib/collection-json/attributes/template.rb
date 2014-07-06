@@ -2,6 +2,7 @@ require_relative 'data'
 
 module CollectionJSON
   class Template < Attribute
+    attribute :conditions
     attribute :data,
               transform:      lambda { |data| data.each.map { |d| Data.from_hash(d) }},
               default:        [],

@@ -9,6 +9,7 @@ In the process of using collection+JSON for an API, our team found we had certai
 * template options
 * template option conditions
 * template errors
+* template conditions
 * template recursion
 * other template fields
 * related ( alpha )
@@ -115,40 +116,118 @@ will result in:
           } 
       }
 ```
-### Options have conditions.
+### Template Conditions
 
-This isn't in HTML... but we don't have javascript. We needed a way to change the options based on what was selected elsewhere. 
+In HTML, sometimes you find yourself using javascript to hide and reveal fields based on answers provided elsewhere. If describing a sectional, how many sections? If it's a table, what are the dimensions? We've added conditions to nested templates, datum, and options.
+
+#### Recursive Template Example
 
 ```ruby
-      CollectionJSON.generate_for('/song_search') do |api|
-        api.set_template do |api|
-          api.add_data "artist", options: [
-                  {
-                    value: '12',
-                    prompt: 'Bob Marley',
-                    conditions: [
-                      {:field => 'genre', :value => 'Reggae'}
-                      {:field => 'instrument', :value => 'guitar'}
-                    ]
-                  },
-                  {
-                    value: '14',
-                    prompt: 'The Wailers',
-                    conditions: [
-                      {:field => 'genre', :value => 'Reggae'}
-                    ]
-                  },
-                  {
-                    value: '16',
-                    prompt: 'Miles Davis',
-                    conditions: [
-                      {:field => 'genre', :value => 'Jazz'},
-                      {:field => 'instrument', :value => 'trumpet'}
-                    ]
-                  }
-          ]
-        end
-      end.to_json
+CollectionJSON.generate_for('/planet.json') do |api|
+  api.set_template do |api|
+    api.add_data "history_of_tobacco", options: [{value: 'true'}, {value: 'false'}] do |api|
+      api.add_template('Tobacco Usage', conditions: [{field: 'history_of_tobacco', value: 'true'}]) do |api|
+        api.add_data "years_of_tobacco_usage", value_type: 'numeric'
+        api.add_data "max_packs_per_day", value_type: 'numeric'
+      end
+    end
+  end
+end.to_json
+```
+
+results in:
+
+```
+{
+    "collection": {
+        "href": "/planet.json",
+        "template": {
+            "data": [
+                {
+                    "name": "history_of_tobacco",
+                    "options": [
+                        {
+                            "value": "true"
+                        },
+                        {
+                            "value": "false"
+                        }
+                    ],
+                    "template": {
+                        "conditions": [
+                            {
+                                "field": "history_of_tobacco",
+                                "value": "true"
+                            }
+                        ],
+                        "data": [
+                            {
+                                "name": "years_of_tobacco_usage",
+                                "value_type": "numeric"
+                            },
+                            {
+                                "name": "max_packs_per_day",
+                                "value_type": "numeric"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+
+
+#### Datum Example
+
+We need a way to indicate whether a question is valid based on what was selected elsewhere.
+
+```ruby
+CollectionJSON.generate_for('/planet.json') do |api|
+  api.set_template do |api|
+    api.add_data "planet_class", options: [{value: 'M'}, {value: 'Y'}]
+    api.add_data "subclass", conditions: [{field: "planet_class", value: 'm'}]
+  end
+end.to_json
+```
+
+
+
+#### Option Example
+
+We needed a way to change the options based on what was selected elsewhere. 
+
+```ruby
+CollectionJSON.generate_for('/song_search') do |api|
+  api.set_template do |api|
+    api.add_data "artist", options: [
+            {
+              value: '12',
+              prompt: 'Bob Marley',
+              conditions: [
+                {:field => 'genre', :value => 'Reggae'}
+                {:field => 'instrument', :value => 'guitar'}
+              ]
+            },
+            {
+              value: '14',
+              prompt: 'The Wailers',
+              conditions: [
+                {:field => 'genre', :value => 'Reggae'}
+              ]
+            },
+            {
+              value: '16',
+              prompt: 'Miles Davis',
+              conditions: [
+                {:field => 'genre', :value => 'Jazz'},
+                {:field => 'instrument', :value => 'trumpet'}
+              ]
+            }
+    ]
+  end
+end.to_json
 ```
 
 
