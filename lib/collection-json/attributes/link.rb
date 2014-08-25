@@ -7,5 +7,13 @@ module CollectionJSON
     attribute :name
     attribute :render
     attribute :prompt
+
+    def embed(collection=nil)
+      self.embedded.push( collection ) 
+    end
+
+    def embedded
+      @embedded ||= []
+    end
   end
 end

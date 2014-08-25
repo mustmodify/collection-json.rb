@@ -23,6 +23,43 @@ describe CollectionJSON do
       ]
     end
 
+    it 'should embed objects from root-level links' do
+      pertwee = CollectionJSON.generate_for('/doctors/3.json') do |api|
+        api.add_item("/doctors/3.json") do |api|
+          api.add_data "full-name", value: "Jon Pertwee"
+          api.add_data "first-appearance", value: '1970-01-03'
+          api.add_data "last-appearance", value: '1974-06-08'
+	end
+      end
+
+      CollectionJSON.generate_for('/doctors.json') do |api|
+        api.add_link "/doctors/3.json", "incarnation", prompt: "Jon Pertwee", render: 'link', embed: pertwee
+      end.to_json.should == %|{\"collection\":{\"href\":\"/doctors.json\",\"embedded\":[{\"collection\":{\"href\":\"/doctors/3.json\",\"items\":[{\"href\":\"/doctors/3.json\",\"data\":[{\"name\":\"full-name\",\"value\":\"Jon Pertwee\"},{\"name\":\"first-appearance\",\"value\":\"1970-01-03\"},{\"name\":\"last-appearance\",\"value\":\"1974-06-08\"}]}]}}],\"links\":[{\"href\":\"/doctors/3.json\",\"rel\":\"incarnation\",\"render\":\"link\",\"prompt\":\"Jon Pertwee\"}]}}|
+    end
+
+    it 'should embed objects from item-level links' do
+      actors = CollectionJSON.generate_for('/characters/the_doctor/actors.json') do |api|
+        api.add_item("/doctors/1.json") do |api|
+          api.add_data "full-name", value: "William Hartnell"
+	end
+	api.add_item("/doctors/2.json") do |api|
+          api.add_data "full-name", value: "Patrick Troughton"
+	end
+	api.add_item("/doctors/3.json") do |api|
+          api.add_data "full-name", value: "Jon Pertwee"
+	end
+	api.add_item("/doctors/4.json") do |api|
+          api.add_data "full-name", value: "Tom Baker"
+	end
+      end
+
+      CollectionJSON.generate_for('/characters.json') do |api|
+        api.add_item "/characters/the_doctor.json" do |api|
+          api.add_link "/characters/the_doctor/actors.json", 'actors', embed: actors, render: 'link', prompt: "Actors"
+	end
+      end.to_json.should == %|{\"collection\":{\"href\":\"/characters.json\",\"embedded\":[{\"collection\":{\"href\":\"/characters/the_doctor/actors.json\",\"items\":[{\"href\":\"/doctors/1.json\",\"data\":[{\"name\":\"full-name\",\"value\":\"William Hartnell\"}]},{\"href\":\"/doctors/2.json\",\"data\":[{\"name\":\"full-name\",\"value\":\"Patrick Troughton\"}]},{\"href\":\"/doctors/3.json\",\"data\":[{\"name\":\"full-name\",\"value\":\"Jon Pertwee\"}]},{\"href\":\"/doctors/4.json\",\"data\":[{\"name\":\"full-name\",\"value\":\"Tom Baker\"}]}]}}],\"items\":[{\"href\":\"/characters/the_doctor.json\",\"links\":[{\"href\":\"/characters/the_doctor/actors.json\",\"rel\":\"actors\",\"render\":\"link\",\"prompt\":\"Actors\"}]}]}}|
+    end
+
     it 'should generate an object with the attributes we expect' do
       response = CollectionJSON.generate_for('/friends/') do |builder|
         builder.add_link '/friends/rss', 'feed'

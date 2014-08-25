@@ -9,6 +9,7 @@ module CollectionJSON
   class Collection < Attribute
     root_node :collection
     attribute :href, transform: URI
+    attribute :embedded
     attribute :version
     attribute :links,
               transform:  lambda { |links| links.each.map { |l| Link.from_hash(l) }},
@@ -24,5 +25,23 @@ module CollectionJSON
     attribute :template, transform: lambda { |template| Template.from_hash(template) }
     attribute :meta, default: {}
     attribute :error, transform: lambda { |error| Error.from_hash(error) }
+
+    def embedded(atts = {})
+      x = [].tap do |out|
+        links.each do |link|
+          link.embedded.each do |item|
+            out.push(item)
+          end
+	end
+
+	items.each do |item|
+          item.links.each do |link|
+            link.embedded.each do |item|
+              out.push(item)
+            end
+          end
+	end
+      end
+    end
   end
 end
