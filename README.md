@@ -23,6 +23,17 @@ Although we could easily have skipped the 'collection' node, our sense was that 
 
 As with most of our extensions, it's 100% backwards compatible. Clients that choose to follow the link should still get a valid response.
 
+**Don't Bait and Switch**
+
+In order to preserve backward-compatibility, the embedded document MUST be the same the content that would be retrieved by getting the link's target.
+
+Exceptions:
+* the server may choose to embed or not embed links.
+* if the underlying data changes, then obviously that should be reflected on that endpoint.
+
+Alternative Solutions:
+* [Inline Collections](https://github.com/collection-json/extensions/blob/master/inline.md)
+
 On the Ruby side, all links accept an 'embed' attribute. The value should respond to #to_json. For instance, you could use another CollectionJSON instance, which wraps everything up in a nice bow:
 
 ```
