@@ -245,6 +245,26 @@ describe CollectionJSON do
     before(:all) do
       json = '{"collection": {
         "href": "http://www.example.org/friends",
+	"embedded": 
+        [
+          {
+            "collection": {
+              "href": "/locations/1.json",
+              "items": 
+              [
+                {
+                  "href": "/locations/1.json",
+                  "data": [
+                    {
+                      "name": "street1",
+                      "value": "1600 Pennsylvania Ave"
+                    }
+                  ]
+                }
+              ]
+	    }
+          }
+        ],
         "links": [
           {"rel": "feed", "href": "http://www.example.org/friends.rss"}
         ],
@@ -266,6 +286,11 @@ describe CollectionJSON do
 
     it 'should have correct href' do
       @collection.href.should eq("http://www.example.org/friends")
+    end
+
+    it 'should notice embedded collections' do
+      @collection.embedded.first.href.should eq("/locations/1.json")
+
     end
 
     it 'should handle the nested attributes' do

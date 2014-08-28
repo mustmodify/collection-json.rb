@@ -26,7 +26,17 @@ module CollectionJSON
     attribute :meta, default: {}
     attribute :error, transform: lambda { |error| Error.from_hash(error) }
 
-    def embedded(atts = {})
+    def embedded(arg = nil)
+      if( arg != nil )
+        @embedded = arg.map do |entry|
+          Collection.from_hash( entry['collection'] )
+	end
+      else
+	@embedded ||= generate_embedded
+      end
+    end
+
+    def generate_embedded
       x = [].tap do |out|
         links.each do |link|
           link.embedded.each do |item|
