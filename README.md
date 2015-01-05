@@ -36,7 +36,7 @@ Alternative Solutions:
 
 On the Ruby side, all links accept an 'embed' attribute. The value should respond to #to_json. For instance, you could use another CollectionJSON instance, which wraps everything up in a nice bow:
 
-```
+```ruby
 actors = CollectionJSON.generate_for('/characters/the_doctor/actors.json') do |api|
   api.add_item("/doctors/1.json") do |api|
     api.add_data "full-name", value: "William Hartnell"
@@ -61,7 +61,7 @@ end
 
 results in:
 
-```
+```json
 {
     "collection": {
         "href": "/characters.json",
@@ -129,7 +129,7 @@ results in:
 
 Here's an example of a link on the root level being embedded:
 
-```
+```ruby
 pertwee = CollectionJSON.generate_for('/doctors/3.json') do |api|
   api.add_item("/doctors/3.json") do |api|
     api.add_data "full-name", value: "Jon Pertwee"
@@ -145,7 +145,7 @@ end
 
 results in:
 
-```
+```json
 {
     "collection": {
         "href": "/doctors.json",
