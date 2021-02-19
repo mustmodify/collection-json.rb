@@ -306,4 +306,15 @@ describe CollectionJSON do
       @collection.links.first.href.should eq("http://www.example.org/friends.rss")
     end
   end
+
+  describe 'problem resolution' do
+    it 'does not hide empty arrays' do
+      CollectionJSON.generate_for('/') do |api|
+        api.add_item('/') do |item|
+          item.add_data 'array', value: []
+        end
+      end.to_json.should include("[]")
+    end
+  end
+
 end

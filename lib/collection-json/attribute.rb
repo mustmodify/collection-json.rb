@@ -45,7 +45,7 @@ module CollectionJSON
       hash = Hash.new.tap do |item|
         self.class.nested_attributes.each do |attribute|
           value = send(attribute)
-          item[attribute] = value unless skip_value?(value)
+          item[attribute] = value unless skip_value?(attribute, value)
         end
       end
       self.class.root_node ? {self.class.root_node => hash} : hash
@@ -67,8 +67,8 @@ module CollectionJSON
       end
     end
 
-    def skip_value?(value)
-      value.nil? || value.respond_to?(:length) && value.length == 0
+    def skip_value?(att, value)
+      !(self.class == CollectionJSON::Data && att == :value && value == []) && (value.nil? || value.respond_to?(:length) && value.length == 0)
     end
   end
 end
