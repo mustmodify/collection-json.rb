@@ -113,7 +113,8 @@ describe CollectionJSON do
           api.add_data "force-side", options: [
 		  {
                     value: 'dark',
-		    prompt: 'Dark Side'
+		    prompt: 'Dark Side',
+                    results: 5
 		  },
 		  {
                     value: 'light',
@@ -121,7 +122,7 @@ describe CollectionJSON do
 		  }
 	  ]
 	end
-      end.to_json.should == %|{"collection":{"href":"/friends/","template":{"data":[{"name":"force-side","options":[{"value":"dark","prompt":"Dark Side"},{"value":"light","prompt":"Light Side"}]}]}}}|
+      end.to_json.should == %|{"collection":{"href":"/friends/","template":{"data":[{"name":"force-side","options":[{"value":"dark","prompt":"Dark Side","results":5},{"value":"light","prompt":"Light Side"}]}]}}}|
     end
 
     it 'includes "group" as an option attribute.' do

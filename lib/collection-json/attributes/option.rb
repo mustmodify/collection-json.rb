@@ -4,6 +4,7 @@ module CollectionJSON
   class Option < Attribute
     attribute :value
     attribute :prompt
+    attribute :results
     attribute :conditions
   end
 end
